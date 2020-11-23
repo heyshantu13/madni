@@ -65,6 +65,7 @@ Route::group(['prefix' => 'invoice'], function()
    Route::post('/update/{id}','InvoiceController@update')->name('invoice.update');
    Route::get('/delete/{id}','InvoiceController@delete')->name('invoice.delete');
    Route::get('/view-lists/{customerid}','InvoiceController@viewlists')->name('invoice.view');
+   Route::get('pdf/invoice/download/{id?}','InvoiceController@generateInvoicePdf')->name('invoice.download');
 
 });  
 

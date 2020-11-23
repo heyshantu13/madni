@@ -19,6 +19,11 @@ use App\TntPrice;
 use Khsing\World\World;
 use App\Exceptions\Handler;
 use App\InvoiceProduct;
+use setasign\Fpdi\Fpdi;
+use Exception;
+
+
+
 
 
 
@@ -330,4 +335,44 @@ class InvoiceController extends Controller
        
         //return $request;
     }
+
+
+    public function generateInvoicePdf(Request $request,$id=null){
+        $invoice = CustomerInvoice::where('id',$id)->firstOrFail();
+        $customer = Customer::findOrFail($invoice->customer_id);
+        $products = InvoiceProduct::where('customer_invoice_id',$invoice->id)->get();
+
+
+         $pdf = PDF::loadView('invoice.pdf');
+            return $pdf->download('invoice.pdf');
+     
+
+   
+
+
+    }
+
+
+
+
+
+
+}
+
+
+class PDF extends FPDI {
+
+    function Header(){
+
+    }
+    function PutLink($URL, $txt)
+    {
+        // Put a hyperlink
+        $this->SetTextColor(0,0,255);
+        $this->SetStyle('U',true);
+        $this->Write(5,$txt,$URL);
+        $this->SetStyle('U',false);
+        $this->SetTextColor(0);
+    }
+
 }
